@@ -13,8 +13,6 @@
  * JSmart Template Engine
  * ***************
  * VERSION: 1.0
- * ***************
- * LICENCE: GPL v2
  **
 */
 
