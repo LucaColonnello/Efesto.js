@@ -18,11 +18,6 @@
  **
 */
 
-/**
-	TODOS:
-	- router manager;
-*/
-
 //use folding pattern to create functionality in Efesto.js
 
 /** Efesto Object */
@@ -803,9 +798,82 @@ Efesto.manager = { };
 	} );
 	
 	//router manager
+	/*
+		Router Manager Usage:
+			- add:	add a route by reg exp, parameters and callback function
+			  Es: Efesto.manager.Router.add( "\/update\/([0-9]+)", [ "update_id" ], function( param ) { } );
+	*/
 	Efesto.manager.Router = Efesto.pattern.singleton( function( ) {
 		
+		//route
+		var route = { };
+		var routeIndex = 0;
 		
+		//object
+		var obj = { };
+		
+		//parse changes
+		var parseHash = function( ) {
+			//hash
+			var hash = substr( document.location.hash, 1 );
+			
+			//loop route
+			for( var i in route ) {
+				var match = hash.match( route[ i ] );
+				if( match ) {
+					var param = ( ( route[ i ].paramKey ) ? { } : [ ] );
+					for( var j = 1; j < match.length; j++ ) {
+						if( route[ i ].paramKey[ j - 1 ] ) {
+							param[ route[ i ].paramKey[ j - 1 ] ] = match[ j ];
+						}
+						else {
+							param[ param.length ] = match[ j ];
+						}
+					}
+					
+					//try to call callback
+					try {
+						//call callback
+						route[ i ].callback( param );
+					}
+					catch( e ) {
+						//throw error
+						console.log( "Route Error: " );
+						console.log( e );
+					}
+					
+					break;
+				}
+			}
+		};
+		
+		//add route
+		obj.add = function( arg1, arg2, arg3 ) {
+			//get param
+			if( typeof arg1 == "undefined" || typeof arg1 == "undefined" ) return false;
+			
+			var	regExp = arg1;
+			var	paramKey = false;
+			
+			if( typeof arg2 == "function" ) {
+				var	callback = arg2;
+			}
+			else {
+				var	paramKey = arg2;
+				if( typeof arg3 == "undefined" ) return false;
+				var	callback = arg3;
+			}
+			
+			//add route
+			route[ routeIndex ] = {
+				path: new RegExp("^" + pattern + "$"),
+				callback: callback,
+				paramKey: paramKey
+			};
+			routeIndex++;
+		};
+		
+		return obj;
 		
 	} );
 	
