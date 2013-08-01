@@ -186,7 +186,7 @@ Efesto.pattern = { };
 	*/
 	Efesto.pattern.production = ( function( ){
 		 /* DATA ARCHIVE */
-		 return Efesto.utils.singleton( function( ) {
+		 return Efesto.pattern.singleton( function( ) {
 			 //definition object
 			 var _definition = {};
 			 
@@ -607,14 +607,22 @@ Efesto.utils = { };
 	
 	/*
 		Loader Usage:
-		Efesto.utils.Loader.loadResource( [
-			{
-				type: 'css', 				//['css','js','view']
-				url:  '',					//resource url
-				name: ''					//in case of type = view
+		Efesto.utils.Loader.loadResource( {
+			resources: [
+				{
+					type: 'css', 				//['css','js','view']
+					url:  '',					//resource url
+					name: ''					//in case of type = view
+				},
+				...
+			],
+			callback: function( ) {
+				// do some stuff after resource loaded
 			},
-			...
-		] );
+			onerror: function( ) {
+				// trigger error
+			}
+		} );
 	*/
 	
 	//loader utility
@@ -687,52 +695,13 @@ Efesto.utils = { };
 					   
 					   //load action view - http://unixpapa.com/js/dyna.html method
 					   var loadActionView = function( res, name, callback ){	//cache actual loader - IE9-10 match eighter onreadystatechange and onload
-							var alreadyLoad = false;
-							
-							//get head
-							var head = document.getElementsByTagName('head')[0];
-							
-							//create script
-							var script = document.createElement('script');
-							script.type = 'text/x-jsmart-tmpl';
-							script.charset = 'utf-8';
-							
-							//onready state change - IE6-7-8
-							script.onreadystatechange = function( ){
-								 //check cache
-								 if( alreadyLoad ) return false;
-								 
-								 //check state
-								 if( this.readyState && ( this.readyState == 'complete' || this.readyState == 'loaded' ) ){
-								  //update cache
-								  alreadyLoad = true;
-								  
-								  //add to view
-								  Efesto.manager.View.add( name, this.innerHTML );
-								  
-								  //callback
-								  callback( );
-							 }
-							};
-							
-							//onload - IE9-10/WEBKIT/GECKO/OPERA
-							script.onload = function( ){
-								 //check cache
-								 if( alreadyLoad ) return false;
-								 
-								 //update cache
-								 alreadyLoad = true;
-								 
+							$.get( res, function( tplText ) { 
 								 //add to view
-								 Efesto.manager.View.add( name, this.innerHTML );
+								 Efesto.manager.View.addView( name, tplText );
 								 
 								 //callback
 								 callback( );
-							};
-							script.src = res;
-							
-							//append tp head
-							head.appendChild(script);
+							} );
 					   };
 					   
 					   //load action css
@@ -773,8 +742,8 @@ Efesto.utils = { };
 							 loadActionScript( param.resources[ res_index ].url, _call );
 							}
 							else if( param.resources[ res_index ].type == 'view' && typeof param.resources[ res_index ].name != "undefined" ) {
-							 //load script
-							 loadActionScript( param.resources[ res_index ].url, param.resources[ res_index ].name, _call );
+							 //load view
+							 loadActionView( param.resources[ res_index ].url, param.resources[ res_index ].name, _call );
 							}
 							else if( param.resources[ res_index ].type == 'css' ) {
 							 //load css

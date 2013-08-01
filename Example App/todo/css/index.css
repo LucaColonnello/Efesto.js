@@ -1,0 +1,58 @@
+/*
+	TO DO APP CSS FILE
+*/
+
+.ToDo {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+
+	.ToDo .toolbar {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		height: 20px;
+		padding: 5px;
+		border-bottom: 1px solid #AAAAAA;
+	}
+		.ToDo .toolbar a {
+			float: left;
+			margin-right: 10px;
+		}
+	
+		.ToDo .appTitle {
+			position: absolute;
+			right: 0px;
+			font-weight: Bold;
+		}
+		
+		
+	.ToDo .listContainer {
+		position: absolute;
+		top: 31px;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+	}
+	
+		.ToDo .listContainer .todoItems {
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			right: 0px;
+			bottom: 31px;
+			overflow: auto;
+		}
+		
+		.ToDo .listContainer .todoStateBar {
+			position: absolute;
+			padding: 5px;
+			height: 20px;
+			left: 0px;
+			right: 0px;
+			bottom: 0px;
+		}
