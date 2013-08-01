@@ -45,6 +45,9 @@ Efesto.pattern = { };
 	//observer pattern
 	Efesto.pattern.observer = ( function( handle ){
 		
+		//check handle
+		if( !handle ) var handle = function( ) { };
+		
 		//observer
 		handle.prototype.observer = [ ];
 		
@@ -72,6 +75,9 @@ Efesto.pattern = { };
 	
 	//subscription pattern
 	Efesto.pattern.subscription = ( function( handle ){
+		
+		//check handle
+		if( !handle ) var handle = function( ) { };
 		
 		//subscribers
 		handle.prototype.subscribers = { };
@@ -134,12 +140,12 @@ Efesto.pattern = { };
 		};
 		
 		//require method
-		handle.prototype.require = function( name ){
+		handle.prototype.require = function( name, param ){
 			var module = {
 				extract: { }
 			};
 			
-			(this.modules[ name ])( module );
+			(this.modules[ name ])( module, param || false );
 			
 			return module.extract;
 		};
@@ -599,6 +605,18 @@ Efesto.pattern = { };
 Efesto.utils = { };
 (function( ) {
 	
+	/*
+		Loader Usage:
+		Efesto.utils.Loader.loadResource( [
+			{
+				type: 'css', 				//['css','js','view']
+				url:  '',					//resource url
+				name: ''					//in case of type = view
+			},
+			...
+		] );
+	*/
+	
 	//loader utility
 	Efesto.utils.Loader = Efesto.pattern.singleton( function( ) {
 		//return object
@@ -610,8 +628,9 @@ Efesto.utils = { };
 						/*
 						 resources:
 						 {
-						  type: ['css','js'],
-						  url:  ''
+						  type: ['css','js','view'],
+						  url:  '', 
+						  name: ''					//in case of type = view
 						 }
 						*/
 						resources: [],
@@ -623,7 +642,7 @@ Efesto.utils = { };
 					   if( param.resources.length == 0 ) return false;
 					   
 					   //load action script - http://unixpapa.com/js/dyna.html method
-					   var loadActionScript = function( res, callback ){//cache actual loader - IE9-10 match eighter onreadystatechange and onload
+					   var loadActionScript = function( res, callback ){	//cache actual loader - IE9-10 match eighter onreadystatechange and onload
 							var alreadyLoad = false;
 							
 							//get head
@@ -656,6 +675,56 @@ Efesto.utils = { };
 								 
 								 //update cache
 								 alreadyLoad = true;
+								 
+								 //callback
+								 callback( );
+							};
+							script.src = res;
+							
+							//append tp head
+							head.appendChild(script);
+					   };
+					   
+					   //load action view - http://unixpapa.com/js/dyna.html method
+					   var loadActionView = function( res, name, callback ){	//cache actual loader - IE9-10 match eighter onreadystatechange and onload
+							var alreadyLoad = false;
+							
+							//get head
+							var head = document.getElementsByTagName('head')[0];
+							
+							//create script
+							var script = document.createElement('script');
+							script.type = 'text/x-jsmart-tmpl';
+							script.charset = 'utf-8';
+							
+							//onready state change - IE6-7-8
+							script.onreadystatechange = function( ){
+								 //check cache
+								 if( alreadyLoad ) return false;
+								 
+								 //check state
+								 if( this.readyState && ( this.readyState == 'complete' || this.readyState == 'loaded' ) ){
+								  //update cache
+								  alreadyLoad = true;
+								  
+								  //add to view
+								  Efesto.manager.View.add( name, this.innerHTML );
+								  
+								  //callback
+								  callback( );
+							 }
+							};
+							
+							//onload - IE9-10/WEBKIT/GECKO/OPERA
+							script.onload = function( ){
+								 //check cache
+								 if( alreadyLoad ) return false;
+								 
+								 //update cache
+								 alreadyLoad = true;
+								 
+								 //add to view
+								 Efesto.manager.View.add( name, this.innerHTML );
 								 
 								 //callback
 								 callback( );
@@ -702,6 +771,10 @@ Efesto.utils = { };
 							if( param.resources[ res_index ].type == 'js' ) {
 							 //load script
 							 loadActionScript( param.resources[ res_index ].url, _call );
+							}
+							else if( param.resources[ res_index ].type == 'view' && typeof param.resources[ res_index ].name != "undefined" ) {
+							 //load script
+							 loadActionScript( param.resources[ res_index ].url, param.resources[ res_index ].name, _call );
 							}
 							else if( param.resources[ res_index ].type == 'css' ) {
 							 //load css
@@ -872,6 +945,9 @@ Efesto.manager = { };
 			};
 			routeIndex++;
 		};
+		
+		//trigger event
+		$( window ).on( 'hashchange', parseHash );
 		
 		return obj;
 		
