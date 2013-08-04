@@ -857,11 +857,13 @@ Efesto.manager = { };
 		//parse changes
 		var parseHash = function( ) {
 			//hash
-			var hash = substr( document.location.hash, 1 );
+			var hash = substr( window.location.hash, 1 );
+			
+			if( !hash ) return;
 			
 			//loop route
 			for( var i in route ) {
-				var match = hash.match( route[ i ] );
+				var match = hash.match( route[ i ].path );
 				if( match ) {
 					var param = ( ( route[ i ].paramKey ) ? { } : [ ] );
 					for( var j = 1; j < match.length; j++ ) {
@@ -874,15 +876,15 @@ Efesto.manager = { };
 					}
 					
 					//try to call callback
-					try {
+					//try {
 						//call callback
 						route[ i ].callback( param );
-					}
+					/*}
 					catch( e ) {
 						//throw error
 						console.log( "Route Error: " );
 						console.log( e );
-					}
+					}*/
 					
 					break;
 				}
@@ -908,11 +910,22 @@ Efesto.manager = { };
 			
 			//add route
 			route[ routeIndex ] = {
-				path: new RegExp("^" + pattern + "$"),
+				path: new RegExp("^" + regExp + "$"),
 				callback: callback,
 				paramKey: paramKey
 			};
 			routeIndex++;
+			
+			//check actual hash
+			parseHash( );
+		};
+		
+		obj.navigate = function( route ) {
+			//get param
+			if( typeof route == "undefined" ) return false;
+			
+			//change hash
+			window.location.hash = "#" + route;
 		};
 		
 		//trigger event

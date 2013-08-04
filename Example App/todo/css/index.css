@@ -56,3 +56,37 @@
 			right: 0px;
 			bottom: 0px;
 		}
+		
+			.ToDo .todoItem {
+				position: relative;
+				padding: 10px;
+			}
+				.ToDo .todoItem .state {
+					position: relative;
+					float: left;
+				}
+				.ToDo .todoItem .content {
+					position: relative;
+					float: left;
+					margin-left: 10px;
+					margin-right: 10px;
+				}
+				.ToDo .todoItem .content.done {
+					text-decoration: line-through;
+				}
+				.ToDo .todoItem .delete {
+					position: relative;
+					float: left;
+					cursor: pointer;
+				}
+				
+			
+			.ToDo .listItem_new {
+				
+			}
+				.ToDo .listItem_new .content {
+					position: relative;
+					float: left;
+					margin-left: 20px;
+					margin-right: 10px;
+				}
