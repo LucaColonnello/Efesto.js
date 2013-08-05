@@ -2,6 +2,36 @@
 	TO DO APP CSS FILE
 */
 
+* {
+	font-family: Arial;
+	font-size: 12px;
+}
+
+a{
+	text-decoration: none;
+	color: #ffffff;
+}
+
+input[type=text] {
+	font-size: 12px;
+	padding: 3px;
+	border: 1px solid #C0C0C0;
+	border-radius: 3px;
+	color: #202020;
+}
+
+.btn_red {
+	position: relative;
+	display: inline-block;
+	padding: 5px 10px;
+	background: #B20000;
+	color: #ffffff;
+	border: 1px solid #770000;
+	border-radius: 5px;
+	box-shadow: 0px 2px 0px 0px #840000;
+	text-decoration: none;
+}
+
 .ToDo {
 	position: absolute;
 	top: 0px;
@@ -15,9 +45,9 @@
 		top: 0px;
 		left: 0px;
 		right: 0px;
-		height: 20px;
-		padding: 5px;
-		border-bottom: 1px solid #AAAAAA;
+		padding: 10px;
+		background: #333333;
+		border-bottom: 4px solid #8C0000;
 	}
 		.ToDo .toolbar a {
 			float: left;
@@ -26,14 +56,16 @@
 	
 		.ToDo .appTitle {
 			position: absolute;
-			right: 0px;
+			right: 10px;
+			color: #FFFFFF;
 			font-weight: Bold;
+			text-align: right;
 		}
 		
 		
 	.ToDo .listContainer {
 		position: absolute;
-		top: 31px;
+		top: 51px;
 		left: 0px;
 		right: 0px;
 		bottom: 0px;
@@ -50,16 +82,31 @@
 		
 		.ToDo .listContainer .todoStateBar {
 			position: absolute;
-			padding: 5px;
-			height: 20px;
 			left: 0px;
 			right: 0px;
 			bottom: 0px;
+			padding: 10px;
+			background: #333333;
+			border-bottom: 4px solid #8C0000;
+			color: #ffffff;
 		}
+			.ToDo .listContainer .todoStateBar .filter {
+				padding: 5px 3px;
+				display: inline-block;
+			}
+			.ToDo .listContainer .todoStateBar .filter.active {
+				background: #B20000;
+				color: #ffffff;
+				border-radius: 3px;
+			}
+			
 		
 			.ToDo .todoItem {
 				position: relative;
-				padding: 10px;
+				margin-bottom: 1px;
+				padding: 20px 10px;
+				background: #F0F0F0;
+				border-bottom: 1px solid #C9C9C9;
 			}
 				.ToDo .todoItem .state {
 					position: relative;
@@ -68,25 +115,42 @@
 				.ToDo .todoItem .content {
 					position: relative;
 					float: left;
+					margin-top: 2px;
 					margin-left: 10px;
 					margin-right: 10px;
+					color: #333333;
+					text-shadow: 1px 1px 0px #ffffff;
 				}
 				.ToDo .todoItem .content.done {
 					text-decoration: line-through;
 				}
 				.ToDo .todoItem .delete {
 					position: relative;
-					float: left;
+					float: right;
 					cursor: pointer;
+					width: 16px;
+					height: 16px;
+					background: url( '../img/delete_btn.png' ) no-repeat;
 				}
 				
 			
 			.ToDo .listItem_new {
-				
+				padding: 20px 10px;
+				background: #F9F9F9;
+				border-bottom: 3px solid #B20000;
 			}
 				.ToDo .listItem_new .content {
 					position: relative;
 					float: left;
+					width: 75%;
 					margin-left: 20px;
 					margin-right: 10px;
 				}
+				.ToDo .listItem_new .btn_red {
+					position: relative;
+					float: right;
+				}
+					.ToDo .listItem_new .content input[type=text] {
+						width: 98%;
+					}
+				

@@ -3,16 +3,16 @@
 	<div class="state">
 		<input type="checkbox" {if $data.checkState( true )}checked{/if} data-index="{$data.getIndex( )}" />
 	</div>
+	<div class="delete" data-index="{$data.getIndex( )}"></div>
 	<div class="content {if $data.checkState( true )}done{/if}">{$data.getContent( )}</div>
-	<div class="delete" data-index="{$data.getIndex( )}">x</div>
 	<div style="clear:both;"></div>
 </div>
 {else}
 <div class="listItem_new">
 	<div class="content">
-		<input type="text" size="50" />
+		<input type="text" />
 	</div>
-	<input type="button" class="addBtn" value="Salva" />
+	<a href="javascript: void 0;" class="addBtn btn_red">Salva</a>
 	<div style="clear:both;"></div>
 </div>
 {/if}

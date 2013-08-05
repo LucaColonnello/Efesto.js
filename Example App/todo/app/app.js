@@ -219,12 +219,19 @@ var ToDo = Efesto.pattern.module( function( ) {
 	
 	//define controller filter
 	self.define( 'controller/filter', function( m, param ) {
+		//remove active class from filter
+		$( ".filter", mainView ).removeClass( "active" );
+		
 		//check param
 		if( param && ( param == "done" || param == "todo" || param == "all" ) ) {
 			//set actual filter
 			actualFilter = param;
 			if( param == "all" )
 				actualFilter = false;
+			
+			//add active class to filter
+			$( ".filter_" + param, mainView ).addClass( "active" );
+			console.log( $( ".filter_" + param, mainView ) );
 			
 			//call controller todo_list
 			self.require( 'view/todo_list' );
